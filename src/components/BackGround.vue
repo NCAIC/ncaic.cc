@@ -46,7 +46,17 @@ onMounted(() => {
 
 <template>
     <div class="fixed h-full w-full opacity-30">
-        <BlackStone v-for="(black, i) in blacks" :key="i" :id="`black-stone-${i}`" />
-        <WhiteStone v-for="(white, i) in whites" :key="i" :id="`white-stone-${i}`" />
+        <BlackStone
+            v-for="(black, i) in blacks"
+            :key="i"
+            :id="`black-stone-${i}`"
+            class="absolute"
+        />
+        <WhiteStone
+            v-for="(white, i) in whites"
+            :key="i"
+            :id="`white-stone-${i}`"
+            class="absolute"
+        />
     </div>
 </template>
