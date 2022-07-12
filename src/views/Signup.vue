@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { signInWithPopup, GithubAuthProvider } from "firebase/auth";
+import { provide } from "vue";
 import { useRouter } from "vue-router";
 import { auth, user } from "../firebase";
 import { brochure } from "../rules";
@@ -7,6 +8,7 @@ import { brochure } from "../rules";
 const router = useRouter();
 
 const provider = new GithubAuthProvider();
+provider.addScope("repo");
 
 async function sign() {
     if (user.value) {

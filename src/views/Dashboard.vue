@@ -67,7 +67,9 @@ function signed_guard() {
                     <Fade>
                         <div v-if="tab === 'general'">
                             <p class="text-lg">
-                                {{ user?.displayName || "挑戰者" }} ({{ user?.email || "未知" }})
+                                {{ user?.providerData[0].displayName || "無名氏" }} ({{
+                                    user?.providerData[0].email || "無電子郵件"
+                                }})
                             </p>
 
                             <button
