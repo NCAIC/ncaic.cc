@@ -2,6 +2,7 @@
 import { ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { auth, user, initialized } from "../firebase";
+import { brochure } from "../rules";
 import Fade from "@c/Fade.vue";
 
 const router = useRouter();
@@ -52,6 +53,15 @@ function signed_guard() {
                     >
                         程式 Code
                     </button>
+                    <button
+                        :class="[
+                            'mb-1 block rounded-lg border p-2 text-left transition-all hover:bg-gray-500/20 md:w-40',
+                            tab === 'rule' ? 'border-gray-400' : 'border-transparent',
+                        ]"
+                        @click="tab = 'rule'"
+                    >
+                        規則 Rule
+                    </button>
                 </div>
                 <div class="flex-1 overflow-auto p-2">
                     <Fade>
@@ -69,6 +79,10 @@ function signed_guard() {
                         </div>
                         <div v-if="tab === 'team'">你目前並未加入任何隊伍。</div>
                         <div v-if="tab === 'code'">你目前並未加入任何隊伍。</div>
+                        <div v-if="tab === 'rule'">
+                            <h1 class="text-xl">競賽規則</h1>
+                            <p class="whitespace-pre-wrap" v-html="brochure"></p>
+                        </div>
                     </Fade>
                 </div>
             </div>
