@@ -18,9 +18,11 @@ getAnalytics(app);
 
 export const auth = getAuth(app);
 export const user = ref<User | null>(null);
+export const initialized = ref(false);
 onAuthStateChanged(auth, (usr) => {
     console.log("onAuthStateChanged", usr);
     user.value = usr;
+    initialized.value = true;
 });
 
 export const db = getFirestore(app);
