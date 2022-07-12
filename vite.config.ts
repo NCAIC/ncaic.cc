@@ -11,6 +11,7 @@ export default defineConfig({
             { find: "@", replacement: path.resolve(__dirname, "./src") },
             { find: "@v", replacement: path.resolve(__dirname, "./src/views") },
             { find: "@c", replacement: path.resolve(__dirname, "./src/components") },
+            { find: "node-fetch", replacement: "isomorphic-fetch" },
         ],
     },
 });

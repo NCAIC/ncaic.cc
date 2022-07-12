@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, watch } from "vue";
-import { user } from "../firebase";
+import { user } from "../user";
 
 const links = reactive<Record<string, string>>({
     Agenda: "/agenda",

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { signInWithPopup, GithubAuthProvider } from "firebase/auth";
-import { provide } from "vue";
 import { useRouter } from "vue-router";
-import { auth, user } from "../firebase";
+import { Octokit } from "octokit";
+import { auth, user, github } from "../user";
 import { brochure } from "../rules";
 
 const router = useRouter();
@@ -19,17 +19,19 @@ async function sign() {
         const result = await signInWithPopup(auth, provider);
 
         const credential = GithubAuthProvider.credentialFromResult(result);
-        if (!credential) {
+        if (!credential || !credential.accessToken) {
             throw new Error("credential is null");
         }
 
         const token = credential.accessToken;
         const user = result.user;
-        console.log(token, user);
 
         if (!token || !user) {
             throw new Error("token or user is null");
         }
+
+        localStorage.setItem("gho-token", token);
+        github.value = new Octokit({ auth: token });
 
         router.push("/dashboard");
     } catch (error) {

@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth, onAuthStateChanged, User } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { Octokit } from "octokit";
 
 export const app = initializeApp({
     apiKey: "AIzaSyB40fadGTlzS4OSf0HD--gxtFWMgT9Q5Tg",
@@ -18,10 +19,17 @@ getAnalytics(app);
 
 export const auth = getAuth(app);
 export const user = ref<User | null>(null);
+export const github = ref<Octokit | null>(null);
 export const initialized = ref(false);
 onAuthStateChanged(auth, (usr) => {
-    console.log("onAuthStateChanged", usr);
     user.value = usr;
+
+    if (usr === null) {
+        github.value = null;
+    } else if (localStorage.getItem("gho-token")) {
+        github.value = new Octokit({ auth: localStorage.getItem("gho-token") });
+    }
+
     initialized.value = true;
 });
 

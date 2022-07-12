@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { reactive, watch } from "vue";
 import Logo from "@c/Logo.vue";
-import { user } from "../firebase";
+import { user } from "../user";
 
 const links = reactive([
     user.value
