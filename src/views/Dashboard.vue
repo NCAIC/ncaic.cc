@@ -1,0 +1,64 @@
+<script setup lang="ts">
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import { user } from "../firebase";
+import Fade from "@c/Fade.vue";
+
+const router = useRouter();
+
+if (user.value === null) {
+    router.push("/");
+}
+
+const tab = ref("general");
+</script>
+
+<template>
+    <div class="flex h-full w-full justify-center p-4">
+        <div class="flex w-4/5 max-w-3xl flex-col items-center">
+            <h1 class="my-4 text-3xl">資訊面板 Dashboard</h1>
+            <div class="flex w-full flex-col md:flex-row">
+                <div class="flex flex-col border-b border-gray-400 px-2 md:border-b-0 md:border-r">
+                    <button
+                        :class="[
+                            'mb-1 block rounded-lg border  p-2 text-left transition-all hover:bg-gray-500/20 md:w-40',
+                            tab === 'general' ? 'border-gray-400' : 'border-transparent',
+                        ]"
+                        @click="tab = 'general'"
+                    >
+                        一般 General
+                    </button>
+                    <button
+                        :class="[
+                            'mb-1 block rounded-lg border  p-2 text-left transition-all hover:bg-gray-500/20 md:w-40',
+                            tab === 'team' ? 'border-gray-400' : 'border-transparent',
+                        ]"
+                        @click="tab = 'team'"
+                    >
+                        隊伍 Team
+                    </button>
+                    <button
+                        :class="[
+                            'mb-1 block rounded-lg border p-2 text-left transition-all hover:bg-gray-500/20 md:w-40',
+                            tab === 'code' ? 'border-gray-400' : 'border-transparent',
+                        ]"
+                        @click="tab = 'code'"
+                    >
+                        程式 Code
+                    </button>
+                </div>
+                <div class="flex-1 overflow-auto p-2">
+                    <Fade>
+                        <div v-if="tab === 'general'">
+                            <p class="text-lg">
+                                {{ user?.displayName || "挑戰者" }} ({{ user?.email || "未知" }})
+                            </p>
+                        </div>
+                        <div v-if="tab === 'team'">你目前並未加入任何隊伍。</div>
+                        <div v-if="tab === 'code'">你目前並未加入任何隊伍。</div>
+                    </Fade>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

@@ -8,6 +8,7 @@ const routes = [
     { path: "/stream", name: "stream", component: () => import("./views/Stream.vue") },
     { path: "/signup", name: "signup", component: () => import("./views/Signup.vue") },
     { path: "/about", name: "about", component: () => import("./views/About.vue") },
+    { path: "/dashboard", name: "dashboard", component: () => import("./views/Dashboard.vue") },
     { path: "/:catchAll(.*)*", redirect: "/" },
 ];
 

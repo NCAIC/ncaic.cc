@@ -1,12 +1,28 @@
 <script setup lang="ts">
+import { reactive, watch } from "vue";
 import Logo from "@c/Logo.vue";
+import { user } from "../firebase";
 
-const links = [
-    { zh: "競賽報名", en: "Signup", to: "/signup" },
+const links = reactive([
+    user.value
+        ? { zh: "資訊面板", en: "Dashboard", to: "/dashboard" }
+        : { zh: "競賽報名", en: "Signup", to: "/signup" },
     { zh: "競賽日程", en: "Agenda", to: "/agenda" },
     { zh: "競賽直播", en: "Stream", to: "/stream" },
     { zh: "關於我們", en: "About", to: "/about" },
-];
+]);
+
+watch(user, () => {
+    if (user.value) {
+        links[0].zh = "資訊面板";
+        links[0].en = "Dashboard";
+        links[0].to = "/dashboard";
+    } else {
+        links[0].zh = "競賽報名";
+        links[0].en = "Signup";
+        links[0].to = "/signup";
+    }
+});
 </script>
 
 <template>

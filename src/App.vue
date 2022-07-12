@@ -6,7 +6,7 @@ import Fade from "@c/Fade.vue";
 
 <template>
     <div class="flex h-full w-full flex-col">
-        <BackGround></BackGround>
+        <BackGround />
 
         <Nav />
 

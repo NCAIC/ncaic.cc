@@ -9,6 +9,7 @@
         "format": "prettier --write '**/*.{ts,css,vue}' --ignore-path .gitignore"
     },
     "dependencies": {
+        "firebase": "^9.9.0",
         "gsap": "^3.10.4",
         "vue": "^3.2.37",
         "vue-router": "^4.1.2"

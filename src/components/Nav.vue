@@ -1,9 +1,22 @@
 <script setup lang="ts">
-const links = {
+import { reactive, watch } from "vue";
+import { user } from "../firebase";
+
+const links = reactive<Record<string, string>>({
     Agenda: "/agenda",
     Stream: "/stream",
     Signup: "/signup",
-};
+});
+
+watch(user, () => {
+    if (user.value) {
+        delete links.Signup;
+        links.Dashboard = "/dashboard";
+    } else {
+        delete links.Dashboard;
+        links.Signup = "/signup";
+    }
+});
 </script>
 
 <template>
@@ -15,7 +28,7 @@ const links = {
             <router-link
                 v-for="(link, key) in links"
                 :to="link"
-                class="flex h-full items-center p-2 text-xl tracking-wide transition-all duration-300 hover:bg-black hover:text-white md:px-3 lg:px-4"
+                class="flex h-full items-center p-1 text-xl tracking-wide transition-all duration-300 hover:bg-black hover:text-white sm:p-2 md:px-3 lg:px-4"
             >
                 {{ key }}
             </router-link>
