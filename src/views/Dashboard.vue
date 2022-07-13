@@ -2,6 +2,7 @@
 import { reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { collection, doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
+import { Base64 } from "js-base64";
 import { auth, user, github, initialized, db } from "../user";
 import { brochure } from "../rules";
 import Fade from "@c/Fade.vue";
@@ -18,6 +19,17 @@ const repo_list = reactive<any[]>([]);
 const selected_repo_idx = ref(-1);
 let listing_repo = false;
 let linking_repo = ref(false);
+const team_info = ref<{
+    name: string;
+    org: string;
+    members: { name: string; email: string; github: string }[];
+}>({ name: "", org: "", members: [] });
+
+watch(repo, () => {
+    if (repo.owner && repo.repo) {
+        get_team_info();
+    }
+});
 
 async function signed_guard() {
     if (user.value === null && initialized.value) {
@@ -54,7 +66,7 @@ async function list_repo() {
     while (true) {
         const result = (
             await github.value.rest.repos.listForAuthenticatedUser({
-                sort: "pushed",
+                sort: "updated",
                 page: i++,
                 per_page: 100,
             })
@@ -69,6 +81,23 @@ async function list_repo() {
     listing_repo = false;
     console.log(repos);
     return repos;
+}
+
+async function get_team_info() {
+    if (github.value === null) {
+        return;
+    }
+
+    const result = await github.value.rest.repos.getContent({ ...repo, path: "team.json" });
+
+    if (result.status !== 200) {
+        return;
+    }
+
+    // @ts-ignore
+    const data = JSON.parse(Base64.decode(result.data.content));
+
+    team_info.value = data;
 }
 
 async function link_repo() {
@@ -228,6 +257,36 @@ async function unlink_repo() {
                                     target="_blank"
                                     >{{ repo.owner }}/{{ repo.repo }}</a
                                 >
+
+                                <hr />
+
+                                <h2 class="text-xl">
+                                    隊伍名稱 | {{ team_info.name || "無法正確解析" }}
+                                </h2>
+                                <h2 class="text-xl">
+                                    所屬組織 | {{ team_info.org || "無法正確解析" }}
+                                </h2>
+
+                                <div class="my-4">
+                                    <h2 class="text-xl">隊伍成員</h2>
+                                    <div
+                                        class="m-2"
+                                        v-for="(member, idx) in team_info.members"
+                                        :key="idx"
+                                    >
+                                        {{ idx + 1 }}.
+                                        <a
+                                            :class="{ 'text-blue-600': member.github }"
+                                            :href="
+                                                member.github
+                                                    ? 'https://github.com/' + member.github
+                                                    : ''
+                                            "
+                                            target="_blank"
+                                            >{{ member.name }} ({{ member.email }})</a
+                                        >
+                                    </div>
+                                </div>
 
                                 <div>
                                     <button

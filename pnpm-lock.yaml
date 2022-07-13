@@ -9,6 +9,7 @@ specifiers:
   firebase: ^9.9.0
   gsap: ^3.10.4
   isomorphic-fetch: ^3.0.0
+  js-base64: ^3.7.2
   octokit: ^2.0.3
   postcss: ^8.4.14
   prettier: ^2.7.1
@@ -26,6 +27,7 @@ dependencies:
   '@octokit/rest': 19.0.3
   firebase: 9.9.0
   gsap: 3.10.4
+  js-base64: 3.7.2
   octokit: 2.0.3
   vue: 3.2.37
   vue-router: 4.1.2_vue@3.2.37
@@ -1912,6 +1914,10 @@ packages:
     engines: {node: '>= 0.6.0'}
     dev: false
     optional: true
+
+  /js-base64/3.7.2:
+    resolution: {integrity: sha512-NnRs6dsyqUXejqk/yv2aiXlAvOs56sLkX6nUdeaNezI5LFFLlsZjOThmwnrcwh5ZZRwZlCMnVAY3CvhIhoVEKQ==}
+    dev: false
 
   /js-yaml/3.14.1:
     resolution: {integrity: sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==}
