@@ -22,7 +22,7 @@ watch(user, () => {
 <template>
     <div class="flex h-16 w-full items-center border-b-2 border-gray-600">
         <router-link to="/" class="flex h-full items-center p-2 text-3xl font-bold tracking-wider">
-            <img src="/logo.png" class="h-full" />
+            <img src="/logo.gif" class="h-full" />
         </router-link>
         <div class="flex h-full flex-1 flex-row justify-end">
             <router-link
