@@ -8,6 +8,7 @@ specifiers:
   autoprefixer: ^10.4.7
   firebase: ^9.9.0
   gsap: ^3.10.4
+  highlight.js: ^11.5.1
   isomorphic-fetch: ^3.0.0
   js-base64: ^3.7.2
   octokit: ^2.0.3
@@ -27,6 +28,7 @@ dependencies:
   '@octokit/rest': 19.0.3
   firebase: 9.9.0
   gsap: 3.10.4
+  highlight.js: 11.5.1
   js-base64: 3.7.2
   octokit: 2.0.3
   vue: 3.2.37
@@ -1808,6 +1810,11 @@ packages:
     dependencies:
       function-bind: 1.1.1
     dev: true
+
+  /highlight.js/11.5.1:
+    resolution: {integrity: sha512-LKzHqnxr4CrD2YsNoIf/o5nJ09j4yi/GcH5BnYz9UnVpZdS4ucMgvP61TDty5xJcFGRjnH4DpujkS9bHT3hq0Q==}
+    engines: {node: '>=12.0.0'}
+    dev: false
 
   /http-parser-js/0.5.8:
     resolution: {integrity: sha512-SGeBX54F94Wgu5RH3X5jsDtf4eHyRogWX1XGT3b4HuW3tQPM4AaBzoUji/4AAJNXCEOWZ5O0DgZmJw1947gD5Q==}

@@ -3,6 +3,7 @@ import { reactive, ref, watch } from "vue";
 import { useRouter } from "vue-router";
 import { collection, doc, getDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { Base64 } from "js-base64";
+import hljs from "highlight.js";
 import { auth, user, github, initialized, db } from "../user";
 import { brochure } from "../rules";
 import Fade from "@c/Fade.vue";
@@ -23,11 +24,15 @@ const team_info = ref<{
     name: string;
     org: string;
     members: { name: string; email: string; github: string }[];
-}>({ name: "", org: "", members: [] });
+    program: string;
+}>({ name: "", org: "", members: [], program: "" });
+const github_me = ref<any>(null);
+const program_code = ref("");
 
-watch(repo, () => {
+watch(repo, async () => {
     if (repo.owner && repo.repo) {
-        get_team_info();
+        await get_team_info();
+        await get_code();
     }
 });
 
@@ -47,6 +52,10 @@ async function signed_guard() {
                     repo_list.push(...list);
                 }
             });
+        }
+
+        if (github.value) {
+            github_me.value = (await github.value.rest.users.getAuthenticated()).data;
         }
     }
 }
@@ -98,6 +107,28 @@ async function get_team_info() {
     const data = JSON.parse(Base64.decode(result.data.content));
 
     team_info.value = data;
+}
+
+async function get_code() {
+    if (github.value === null) {
+        return;
+    }
+
+    if (!team_info.value.program) {
+        return;
+    }
+
+    const result = await github.value.rest.repos.getContent({
+        ...repo,
+        path: team_info.value.program,
+    });
+
+    if (result.status !== 200) {
+        return;
+    }
+
+    // @ts-ignore
+    program_code.value = hljs.highlightAuto(Base64.decode(result.data.content)).value;
 }
 
 async function link_repo() {
@@ -248,6 +279,7 @@ async function unlink_repo() {
                                         結繫此 GitHub 儲存庫
                                     </button>
                                 </div>
+                                <div v-else>載入中...</div>
                             </div>
                             <div v-else>
                                 隊伍已建立，結繫至
@@ -270,20 +302,39 @@ async function unlink_repo() {
                                 <div class="my-4">
                                     <h2 class="text-xl">隊伍成員</h2>
                                     <div
+                                        class="text-rose-600"
+                                        v-if="
+                                            team_info.members.every(
+                                                (mem) =>
+                                                    mem.github.toLowerCase() !==
+                                                    github_me.login.toLowerCase(),
+                                            )
+                                        "
+                                    >
+                                        注意：隊伍成員沒有你，請記得修改 team.json 來添加成員。
+                                    </div>
+                                    <div
                                         class="m-2"
                                         v-for="(member, idx) in team_info.members"
                                         :key="idx"
                                     >
                                         {{ idx + 1 }}.
                                         <a
-                                            :class="{ 'text-blue-600': member.github }"
+                                            :class="{
+                                                'text-blue-600': member.github,
+                                                'text-orange-500':
+                                                    member.github.toLowerCase() ===
+                                                    github_me.login.toLowerCase(),
+                                            }"
                                             :href="
                                                 member.github
                                                     ? 'https://github.com/' + member.github
                                                     : ''
                                             "
                                             target="_blank"
-                                            >{{ member.name }} ({{ member.email }})</a
+                                        >
+                                            <span>{{ idx === 0 ? "[Leader]" : "" }}</span>
+                                            {{ member.name }} ({{ member.email }})</a
                                         >
                                     </div>
                                 </div>
@@ -320,7 +371,17 @@ async function unlink_repo() {
                                         結繫此 GitHub 儲存庫
                                     </button>
                                 </div>
+                                <div v-else>載入中...</div>
                             </div>
+                            <div v-else-if="team_info.program">
+                                <p>程式檔案：{{ team_info.program }}</p>
+                                <div
+                                    class="w-full overflow-auto whitespace-pre-wrap rounded border border-gray-200 p-2"
+                                >
+                                    <code v-html="program_code"></code>
+                                </div>
+                            </div>
+                            <div v-else>請於 team.json 中設定 program 位置。</div>
                         </div>
                         <div v-if="tab === 'rule'">
                             <h1 class="text-xl">競賽規則</h1>
@@ -330,5 +391,9 @@ async function unlink_repo() {
                 </div>
             </div>
         </div>
+        <link
+            rel="stylesheet"
+            href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/styles/default.min.css"
+        />
     </div>
 </template>
