@@ -25,11 +25,12 @@ export const repo = reactive({ owner: "", repo: "" });
 export const github_me = ref<any>(null);
 
 export const team = ref<{
+    register: boolean;
     name: string;
     org: string;
     members: { name: string; email: string; github: string }[];
     program: string;
-}>({ name: "", org: "", members: [], program: "" });
+}>({ register: false, name: "", org: "", members: [], program: "" });
 watch(repo, async () => {
     if (repo.owner && repo.repo) {
         if (github.value === null) {
@@ -40,8 +41,9 @@ watch(repo, async () => {
 
         // @ts-ignore
         team.value = JSON.parse(Base64.decode(result.data.content));
+        console.log(team.value);
     } else {
-        team.value = { name: "", org: "", members: [], program: "" };
+        team.value = { register: false, name: "", org: "", members: [], program: "" };
     }
 });
 
@@ -56,18 +58,25 @@ onAuthStateChanged(auth, async (usr) => {
         github.value = new Octokit({ auth: localStorage.getItem("gho-token") });
     }
 
-    if (user.value) {
-        await getDoc(doc(collection(db, "repo"), user.value.uid)).then((doc) => {
-            if (doc.exists()) {
-                [repo.owner, repo.repo] = [doc.data().owner, doc.data().repo];
-            } else {
-                [repo.owner, repo.repo] = ["", ""];
+    while (true) {
+        try {
+            if (user.value) {
+                await getDoc(doc(collection(db, "repo"), user.value.uid)).then((doc) => {
+                    if (doc.exists()) {
+                        [repo.owner, repo.repo] = [doc.data().owner, doc.data().repo];
+                    } else {
+                        [repo.owner, repo.repo] = ["", ""];
+                    }
+                });
             }
-        });
-    }
 
-    if (github.value) {
-        github_me.value = (await github.value.rest.users.getAuthenticated()).data;
+            if (github.value) {
+                github_me.value = (await github.value.rest.users.getAuthenticated()).data;
+            }
+            break;
+        } catch (err) {
+            console.error(err);
+        }
     }
 
     initialized.value = true;

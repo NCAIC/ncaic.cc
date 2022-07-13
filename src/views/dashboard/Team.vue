@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import LinkRepo from "@c/LinkRepo.vue";
 import { deleteDoc, doc, collection, getDoc } from "firebase/firestore";
+import Swal from "sweetalert2";
 import { user, repo, team, github_me, db } from "../../user";
 
 async function unlink_repo() {
     try {
+        if (team.value.register) {
+            throw new Error("已完成報名，不得取消結繫");
+        }
         if (user.value === null) {
-            throw new Error("user is null");
+            throw new Error("使用者未登入");
         }
 
         await deleteDoc(doc(collection(db, "repo"), user.value.uid));
@@ -16,8 +20,8 @@ async function unlink_repo() {
                 [repo.owner, repo.repo] = ["", ""];
             }
         });
-    } catch (e) {
-        console.error(e);
+    } catch (err) {
+        Swal.fire({ title: (err as Error).message, icon: "error" });
     }
 }
 </script>
@@ -36,6 +40,10 @@ async function unlink_repo() {
 
             <hr />
 
+            <h2 v-if="team.register" class="text-xl text-emerald-500">已完成報名</h2>
+            <h2 v-else class="text-xl text-rose-500">
+                尚未完成報名，將 register 欄位設為 true 來報名競賽
+            </h2>
             <h2 class="text-xl">隊伍名稱 | {{ team.name || "無法正確解析" }}</h2>
             <h2 class="text-xl">所屬組織 | {{ team.org || "無法正確解析" }}</h2>
 

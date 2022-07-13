@@ -2,6 +2,7 @@
 import { signInWithPopup, GithubAuthProvider } from "firebase/auth";
 import { useRouter } from "vue-router";
 import { Octokit } from "octokit";
+import Swal from "sweetalert2";
 import { auth, user, github } from "../user";
 import { brochure } from "../rules";
 
@@ -20,22 +21,22 @@ async function sign() {
 
         const credential = GithubAuthProvider.credentialFromResult(result);
         if (!credential || !credential.accessToken) {
-            throw new Error("credential is null");
+            throw new Error("GitHub 驗證失敗");
         }
 
         const token = credential.accessToken;
         const user = result.user;
 
         if (!token || !user) {
-            throw new Error("token or user is null");
+            throw new Error("遺失登入資訊");
         }
 
         localStorage.setItem("gho-token", token);
         github.value = new Octokit({ auth: token });
 
         router.push("/dashboard");
-    } catch (error) {
-        console.error(error);
+    } catch (err) {
+        Swal.fire({ title: (err as Error).message, icon: "error" });
     }
 }
 </script>

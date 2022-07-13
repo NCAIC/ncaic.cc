@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { setDoc, doc, collection } from "firebase/firestore";
 import { reactive, ref } from "vue";
+import Swal from "sweetalert2";
 import { db, github, user, repo } from "../user";
 
 const emit = defineEmits(["linked", "error"]);
@@ -12,30 +13,34 @@ const linking_repo = ref(false);
 list_repo();
 
 async function list_repo() {
-    if (github.value === null) {
-        throw new Error("github is null");
-    }
-
-    console.time("list repo");
-    const repos = [];
-    let i = 0;
-    while (true) {
-        const result = (
-            await github.value.rest.repos.listForAuthenticatedUser({
-                sort: "updated",
-                page: i++,
-                per_page: 100,
-            })
-        ).data;
-        repos.push(...result);
-        if (result.length < 100) {
-            break;
+    try {
+        if (github.value === null) {
+            throw new Error("GitHub 存取失敗");
         }
-    }
-    console.timeEnd("list repo");
 
-    console.log(repos);
-    repo_list.push(...repos);
+        console.time("list repo");
+        const repos = [];
+        let i = 0;
+        while (true) {
+            const result = (
+                await github.value.rest.repos.listForAuthenticatedUser({
+                    sort: "updated",
+                    page: i++,
+                    per_page: 100,
+                })
+            ).data;
+            repos.push(...result);
+            if (result.length < 100) {
+                break;
+            }
+        }
+        console.timeEnd("list repo");
+
+        console.log(repos);
+        repo_list.push(...repos);
+    } catch (err) {
+        Swal.fire({ title: (err as Error).message, icon: "error" });
+    }
 }
 
 async function link_repo() {
@@ -48,23 +53,22 @@ async function link_repo() {
         const selected_repo = repo_list[selected_repo_idx.value];
 
         if (!selected_repo) {
-            throw new Error("repo is null");
+            throw new Error("無法找到選擇的 GitHub 儲存庫");
         }
 
         const data = { owner: selected_repo.owner.login, repo: selected_repo.name };
 
         if (user.value === null) {
-            throw new Error("user is null");
+            throw new Error("使用者狀態異常");
         }
 
         await setDoc(doc(collection(db, "repo"), user.value.uid), data);
 
-        repo.owner = data.owner;
-        repo.repo = data.repo;
+        [repo.owner, repo.repo] = [data.owner, data.repo];
 
         emit("linked");
     } catch (err) {
-        console.error(err);
+        Swal.fire({ title: (err as Error).message, icon: "error" });
         emit("error");
     }
 
