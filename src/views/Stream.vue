@@ -10,7 +10,7 @@ import { schedule, teams } from "../public";
             <div class="w-full">
                 <div
                     v-for="s in schedule"
-                    class="grid w-full grid-cols-1 rounded-md border border-gray-400 p-2 lg:grid-cols-3"
+                    class="mb-4 grid w-full grid-cols-1 rounded-md border border-gray-400 p-2 lg:grid-cols-3"
                 >
                     <div
                         class="col-span-1 flex flex-row justify-around border-b p-2 lg:flex-col lg:justify-center lg:border-b-0 lg:border-r"

@@ -1,5 +1,5 @@
 import { reactive } from "vue";
-import { collection, onSnapshot, Timestamp } from "firebase/firestore";
+import { collection, query, orderBy, onSnapshot, Timestamp } from "firebase/firestore";
 import { db } from "./user";
 
 export const schedule = reactive<
@@ -21,7 +21,7 @@ export const schedule = reactive<
     }[]
 >([]);
 
-onSnapshot(collection(db, "schedule"), (snapshot) => {
+onSnapshot(query(collection(db, "schedule"), orderBy("time", "asc")), (snapshot) => {
     schedule.splice(
         0,
         schedule.length,
