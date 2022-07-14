@@ -3,7 +3,7 @@ import { signInWithPopup, GithubAuthProvider } from "firebase/auth";
 import { useRouter } from "vue-router";
 import { Octokit } from "octokit";
 import Swal from "sweetalert2";
-import { auth, user, github } from "../composables/core";
+import { auth, user, github, gh_self } from "../composables/core";
 import { brochure } from "../rules";
 
 const router = useRouter();
@@ -37,6 +37,7 @@ async function sign() {
 
         localStorage.setItem("gho-token", token);
         github.value = new Octokit({ auth: token });
+        gh_self.value = (await github.value.rest.users.getAuthenticated()).data;
 
         router.push("/dashboard");
     } catch (err) {
