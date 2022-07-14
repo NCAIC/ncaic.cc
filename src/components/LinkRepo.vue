@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { setDoc, doc, collection } from "firebase/firestore";
 import { reactive, ref } from "vue";
 import Swal from "sweetalert2";
-import { db, github, user, repo } from "../user";
+import { github, team, functions, TeamJson } from "../composables/core";
+import { httpsCallable } from "firebase/functions";
 
 const emit = defineEmits(["linked", "error"]);
 
@@ -49,28 +49,53 @@ async function link_repo() {
     }
     linking_repo.value = true;
 
-    try {
-        const selected_repo = repo_list[selected_repo_idx.value];
+    await Swal.fire({
+        title: "確定要結繫嗎？",
+        text: "結繫後將無法解除",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "結繫",
+        cancelButtonText: "取消",
+        showLoaderOnConfirm: true,
+        preConfirm: async () => {
+            try {
+                const selected_repo = repo_list[selected_repo_idx.value];
 
-        if (!selected_repo) {
-            throw new Error("無法找到選擇的 GitHub 儲存庫");
-        }
+                if (!selected_repo) {
+                    throw new Error("無法找到選擇的 GitHub 儲存庫");
+                }
 
-        const data = { owner: selected_repo.owner.login, repo: selected_repo.name };
+                const token = localStorage.getItem("gho-token");
+                if (!token) {
+                    throw new Error("無法取得 GitHub 授權");
+                }
 
-        if (user.value === null) {
-            throw new Error("使用者狀態異常");
-        }
+                if (!functions.value) {
+                    throw new Error("無法建立遠端連線");
+                }
 
-        await setDoc(doc(collection(db, "repo"), user.value.uid), data);
+                const params = {
+                    owner: selected_repo.owner.login,
+                    repo: selected_repo.name,
+                    token,
+                };
+                const { data } = await httpsCallable<unknown, { document: TeamJson }>(
+                    functions.value,
+                    "register",
+                )(params);
 
-        [repo.owner, repo.repo] = [data.owner, data.repo];
+                team.value = { ...data.document, owner: params.owner, repo: params.repo };
 
-        emit("linked");
-    } catch (err) {
-        Swal.fire({ title: (err as Error).message, icon: "error" });
-        emit("error");
-    }
+                Swal.fire({ title: "結繫成功", icon: "success" });
+
+                emit("linked");
+            } catch (err) {
+                Swal.fire({ title: (err as Error).message, icon: "error" });
+                emit("error");
+            }
+        },
+        allowOutsideClick: () => !Swal.isLoading(),
+    });
 
     linking_repo.value = false;
 }

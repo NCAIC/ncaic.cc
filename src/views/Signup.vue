@@ -3,7 +3,7 @@ import { signInWithPopup, GithubAuthProvider } from "firebase/auth";
 import { useRouter } from "vue-router";
 import { Octokit } from "octokit";
 import Swal from "sweetalert2";
-import { auth, user, github } from "../user";
+import { auth, user, github } from "../composables/core";
 import { brochure } from "../rules";
 
 const router = useRouter();
@@ -17,7 +17,11 @@ async function sign() {
         return;
     }
     try {
-        const result = await signInWithPopup(auth, provider);
+        if (!auth.value) {
+            throw new Error("Firebase 存取失敗");
+        }
+
+        const result = await signInWithPopup(auth.value, provider);
 
         const credential = GithubAuthProvider.credentialFromResult(result);
         if (!credential || !credential.accessToken) {

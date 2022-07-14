@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { schedule, teams } from "../public";
+import { schedules, teams } from "../composables/core";
 </script>
 
 <template>
@@ -9,7 +9,7 @@ import { schedule, teams } from "../public";
 
             <div class="w-full">
                 <div
-                    v-for="s in schedule"
+                    v-for="s in schedules"
                     class="mb-4 grid w-full grid-cols-1 rounded-md border border-gray-400 p-2 lg:grid-cols-3"
                 >
                     <div

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, watch, defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
-import { user, initialized } from "../user";
+import { user, stage } from "../composables/core";
 import Fade from "@c/Fade.vue";
 
 const General = defineAsyncComponent(() => import("@v/dashboard/General.vue"));
@@ -13,12 +13,12 @@ const router = useRouter();
 
 signed_guard();
 watch(user, signed_guard);
-watch(initialized, signed_guard);
+watch(stage, signed_guard);
 
 const tab = ref("general");
 
 async function signed_guard() {
-    if (user.value === null && initialized.value) {
+    if (user.value === null && stage.value >= 2) {
         router.push("/");
     }
 }

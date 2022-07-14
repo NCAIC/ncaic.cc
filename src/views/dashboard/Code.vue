@@ -2,7 +2,7 @@
 import { ref, watch, defineAsyncComponent } from "vue";
 import hljs from "highlight.js/es/common";
 import { Base64 } from "js-base64";
-import { github, repo, team } from "../../user";
+import { github, team } from "../../composables/core";
 
 const LinkRepo = defineAsyncComponent(() => import("@c/LinkRepo.vue"));
 
@@ -15,12 +15,13 @@ async function get_code() {
         return;
     }
 
-    if (!team.value.program) {
+    if (!team.value || !team.value.program) {
         return;
     }
 
     const result = await github.value.rest.repos.getContent({
-        ...repo,
+        owner: team.value.owner,
+        repo: team.value.repo,
         path: team.value.program,
     });
 
@@ -31,7 +32,7 @@ async function get_code() {
 
 <template>
     <div>
-        <LinkRepo v-if="!repo.repo" class="w-full" />
+        <LinkRepo v-if="!team" class="w-full" />
         <div v-else-if="team.program">
             <p>程式檔案：{{ team.program }}</p>
             <div

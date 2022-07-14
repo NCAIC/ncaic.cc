@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { reactive, watch } from "vue";
-import { user } from "../user";
+import { user } from "../composables/core";
 
 const links = reactive<Record<string, string>>({
     Agenda: "/agenda",

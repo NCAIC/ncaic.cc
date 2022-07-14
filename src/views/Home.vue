@@ -2,10 +2,9 @@
 import { computed, reactive, watch } from "vue";
 import Logo from "@c/Logo.vue";
 import Fade from "@c/Fade.vue";
-import { user } from "../user";
-import { news } from "../public";
+import { announcements, user } from "../composables/core";
 
-const pinned = computed(() => news.filter((n) => n.pinned).slice(0, 3));
+const pinned = computed(() => announcements.filter((n) => n.pinned).slice(0, 3));
 
 const links = reactive([
     user.value
@@ -64,9 +63,9 @@ watch(user, () => {
         <div class="h-full w-full overflow-hidden p-4">
             <h2 id="news" class="text-3xl">公告</h2>
             <Fade>
-                <div class="my-2 text-lg" v-if="news.length">
+                <div class="my-2 text-lg" v-if="announcements.length">
                     <div
-                        v-for="n in news"
+                        v-for="n in announcements"
                         :key="n.title"
                         class="mb-2 border-l-4 border-l-gray-400 p-2"
                     >
