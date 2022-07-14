@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import BackGround from "@c/BackGround.vue";
-import Nav from "@c/Nav.vue";
+import { defineAsyncComponent } from "vue";
 import Fade from "@c/Fade.vue";
+
+const BackGround = defineAsyncComponent(() => import("@c/BackGround.vue"));
+const Nav = defineAsyncComponent(() => import("@c/Nav.vue"));
 </script>
 
 <template>

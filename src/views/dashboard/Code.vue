@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import hljs from "highlight.js";
+import { ref, watch, defineAsyncComponent } from "vue";
+import hljs from "highlight.js/es/common";
 import { Base64 } from "js-base64";
-import LinkRepo from "@c/LinkRepo.vue";
 import { github, repo, team } from "../../user";
+
+const LinkRepo = defineAsyncComponent(() => import("@c/LinkRepo.vue"));
 
 const code = ref("");
 get_code();

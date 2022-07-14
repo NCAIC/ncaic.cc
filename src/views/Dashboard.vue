@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, defineAsyncComponent } from "vue";
 import { useRouter } from "vue-router";
 import { user, initialized } from "../user";
 import Fade from "@c/Fade.vue";
-import General from "@v/dashboard/General.vue";
-import Team from "@v/dashboard/Team.vue";
-import Code from "@v/dashboard/Code.vue";
-import Rule from "@v/dashboard/Rule.vue";
+
+const General = defineAsyncComponent(() => import("@v/dashboard/General.vue"));
+const Team = defineAsyncComponent(() => import("@v/dashboard/Team.vue"));
+const Code = defineAsyncComponent(() => import("@v/dashboard/Code.vue"));
+const Rule = defineAsyncComponent(() => import("@v/dashboard/Rule.vue"));
 
 const router = useRouter();
 
