@@ -51,7 +51,7 @@ async function link_repo() {
 
     await Swal.fire({
         title: "確定要結繫嗎？",
-        text: "結繫後將無法解除",
+        text: "結繫後將無法解除，並以當下 team.json 內容報名",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "結繫",
