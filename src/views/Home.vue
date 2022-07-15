@@ -57,7 +57,7 @@ const announcement_id = ref("");
                         >
                         <span class="px-2">{{ news.title }}</span>
                         <span
-                            class="text-gray-500"
+                            class="hidden text-gray-500 sm:inline"
                             v-html="
                                 news.content.slice(0, 20) + (news.content.length > 20 ? '...' : '')
                             "
@@ -69,7 +69,7 @@ const announcement_id = ref("");
             <div class="absolute bottom-0 right-0 grid grid-cols-2 gap-2 p-4 md:gap-3 lg:gap-4">
                 <router-link v-for="(link, i) in links" :key="i" :to="link.to" class="rounded-full">
                     <div
-                        class="flex h-36 w-36 flex-col items-center justify-center rounded-full border border-black text-xl transition-all duration-300 hover:h-40 hover:w-40 hover:bg-black hover:text-white md:hover:h-44 md:hover:w-44 lg:text-2xl"
+                        class="flex h-28 w-28 flex-col items-center justify-center rounded-full border border-black text-lg transition-all duration-300 hover:h-40 hover:w-40 hover:bg-black hover:text-white sm:h-36 sm:w-36 sm:text-xl md:hover:h-44 md:hover:w-44 lg:text-2xl"
                     >
                         <span>{{ link.zh }}</span> <span>{{ link.en }}</span>
                     </div>
