@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, reactive, watch } from "vue";
+import { computed, reactive, ref, watch } from "vue";
 import Logo from "@c/Logo.vue";
 import Fade from "@c/Fade.vue";
+import Announcement from "@c/Announcement.vue";
 import { announcements, user } from "../composables/core";
 
 const pinned = computed(() => announcements.filter((n) => n.pinned).slice(0, 3));
@@ -26,19 +27,34 @@ watch(user, () => {
         links[0].to = "/signup";
     }
 });
+
+const announcement_id = ref("");
 </script>
 
 <template>
     <div class="h-full w-full overflow-y-auto">
+        <Fade>
+            <Announcement
+                v-if="announcement_id"
+                :id="announcement_id"
+                @close="announcement_id = ''"
+            />
+        </Fade>
         <div class="h-full w-full overflow-hidden p-4">
             <Logo class="origin-top-left lg:scale-150" />
 
             <Fade>
                 <div class="my-2 text-lg lg:translate-y-12" v-if="pinned.length">
-                    <a v-for="news in pinned" :key="news.title" class="mb-2 block" href="#news">
-                        <span class="inline-block border-l-4 border-l-gray-400 px-2">{{
-                            news.time.toDate().toLocaleDateString()
-                        }}</span>
+                    <div
+                        v-for="news in pinned"
+                        :key="news.title"
+                        class="group mb-2 cursor-pointer"
+                        @click="announcement_id = news.id"
+                    >
+                        <span
+                            class="inline-block border-l-4 border-cyan-400 px-2 transition-all group-hover:border-l-8"
+                            >{{ news.time.toDate().toLocaleDateString() }}</span
+                        >
                         <span class="px-2">{{ news.title }}</span>
                         <span
                             class="text-gray-500"
@@ -46,7 +62,7 @@ watch(user, () => {
                                 news.content.slice(0, 20) + (news.content.length > 20 ? '...' : '')
                             "
                         ></span>
-                    </a>
+                    </div>
                 </div>
             </Fade>
 
@@ -67,13 +83,16 @@ watch(user, () => {
                     <div
                         v-for="n in announcements"
                         :key="n.title"
-                        class="mb-2 border-l-4 border-l-gray-400 p-2"
+                        :class="[
+                            'mb-2 cursor-pointer border-l-4 p-2 transition-all hover:border-l-8',
+                            n.pinned ? 'border-cyan-400' : 'border-gray-400',
+                        ]"
+                        @click="announcement_id = n.id"
                     >
                         <span class="inline-block pr-2">
                             {{ n.time.toDate().toLocaleString() }}
                         </span>
                         <span class="px-2">{{ n.title }}</span>
-                        <div class="overflow-auto text-gray-700" v-html="n.content"></div>
                     </div>
                 </div>
             </Fade>

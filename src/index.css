@@ -4,6 +4,7 @@
 
 * {
     font-family: "FakePearl", "Yuanti TC", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+    scrollbar-color: transparent transparent;
     @apply relative;
 }
 
@@ -11,6 +12,10 @@ html,
 body,
 #app {
     @apply m-0 h-full w-full p-0;
+}
+
+::-webkit-scrollbar {
+    display: none;
 }
 
 @font-face {
