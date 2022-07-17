@@ -116,7 +116,7 @@ async function link_repo() {
             </select>
 
             <button
-                class="my-2 rounded border border-gray-600 p-2 transition-all hover:border-emerald-400 hover:bg-emerald-400 hover:text-white disabled:border-gray-300 disabled:bg-gray-300 disabled:text-gray-500"
+                class="my-2 block rounded border border-gray-600 p-2 transition-all hover:border-emerald-400 hover:bg-emerald-400 hover:text-white disabled:border-gray-300 disabled:bg-gray-300 disabled:text-gray-500"
                 @click="link_repo"
                 :disabled="selected_repo_idx === -1 || linking_repo"
             >
