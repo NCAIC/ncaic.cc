@@ -101,20 +101,22 @@ async function check_workflow() {
         <div v-else-if="team.program">
             <p>
                 程式檔案：{{ team.program }}
-                <span
-                    :class="{
-                        'transition-all': true,
-                        'font-mono': true,
-                        'text-emerald-500': passed,
-                    }"
+                <a
+                    :class="[
+                        'transition-all',
+                        'font-mono',
+                        passed ? 'text-emerald-500' : 'text-gray-500',
+                    ]"
                     :title="passed ? 'Test Passed' : ''"
+                    :href="`https://github.com/${team.owner}/${team.repo}/blob/${program.commit}/${team.program}`"
+                    target="_blank"
                 >
                     ({{
                         program.sha
                             ? `${program.sha.slice(0, 7)} @${program.commit.slice(0, 7)}`
                             : "無紀錄"
                     }})
-                </span>
+                </a>
             </p>
             <div>
                 <button
