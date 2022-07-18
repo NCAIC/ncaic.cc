@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { user, auth } from "../../composables/core";
+import { user, sign_out } from "../../composables/core";
 </script>
 
 <template>
@@ -12,7 +12,7 @@ import { user, auth } from "../../composables/core";
 
         <button
             class="my-2 rounded border border-gray-600 p-2 transition-all hover:border-rose-600 hover:bg-rose-500 hover:text-white"
-            @click="auth?.signOut()"
+            @click="sign_out"
         >
             登出 Sign Out
         </button>

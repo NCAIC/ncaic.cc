@@ -1,7 +1,7 @@
 import { reactive, ref } from "vue";
 import { initializeApp, FirebaseApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, onAuthStateChanged, Auth, User } from "firebase/auth";
+import { getAuth, onAuthStateChanged, Auth, User, signOut } from "firebase/auth";
 import {
     getFirestore,
     collection,
@@ -28,6 +28,7 @@ export const team = ref<TeamJson | null>(null);
 export const schedules = reactive<Schedule[]>([]);
 export const teams = reactive<Team[]>([]);
 export const announcements = reactive<Announcement[]>([]);
+export let auto_logout_timer = 0;
 
 initialize();
 
@@ -63,8 +64,12 @@ async function auth_listener(usr: User | null) {
 
     if (usr === null) {
         github.value = null;
-    } else if (localStorage.getItem("gho-token")) {
+    } else if (
+        localStorage.getItem("gho-token") &&
+        parseInt(localStorage.getItem("gho-expires") || "0") > Date.now()
+    ) {
         github.value = new Octokit({ auth: localStorage.getItem("gho-token") });
+        set_auto_logout();
     }
 
     if (stage.value < 2) {
@@ -132,6 +137,31 @@ function subscribe() {
             );
         });
     }
+}
+
+export function sign_out() {
+    localStorage.removeItem("gho-token");
+    localStorage.removeItem("gho-expires");
+    if (auth.value) {
+        signOut(auth.value);
+    }
+    import("sweetalert2").then(({ default: Swal }) =>
+        Swal.fire({ title: "已登出", text: "成功登出囉！", icon: "success" }),
+    );
+}
+
+export function set_auto_logout() {
+    window.clearTimeout(auto_logout_timer);
+    auto_logout_timer = window.setTimeout(() => {
+        if (parseInt(localStorage.getItem("gho-expires") || "0") < Date.now() + 1000) {
+            sign_out();
+        }
+    }, parseInt(localStorage.getItem("gho-expires") || "0") - Date.now());
+    console.log(
+        "logout in",
+        (parseInt(localStorage.getItem("gho-expires") || "0") - Date.now()) / 1000,
+        "seconds",
+    );
 }
 
 export interface Schedule {
