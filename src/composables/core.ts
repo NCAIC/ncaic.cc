@@ -62,15 +62,16 @@ function initialize() {
 async function auth_listener(usr: User | null) {
     user.value = usr;
 
-    if (usr === null) {
-        github.value = null;
-    } else if (
-        localStorage.getItem("gho-token") &&
-        parseInt(localStorage.getItem("gho-expires") || "0") > Date.now()
+    if (
+        usr === null ||
+        !localStorage.getItem("gho-token") ||
+        parseInt(localStorage.getItem("gho-expires") || "0") <= Date.now()
     ) {
-        github.value = new Octokit({ auth: localStorage.getItem("gho-token") });
-        set_auto_logout();
+        sign_out();
     }
+
+    github.value = new Octokit({ auth: localStorage.getItem("gho-token") });
+    set_auto_logout();
 
     if (stage.value < 2) {
         stage.value = 2;
@@ -140,14 +141,30 @@ function subscribe() {
 }
 
 export function sign_out() {
-    localStorage.removeItem("gho-token");
-    localStorage.removeItem("gho-expires");
-    if (auth.value) {
-        signOut(auth.value);
+    try {
+        localStorage.removeItem("gho-token");
+        localStorage.removeItem("gho-expires");
+        if (auth.value) {
+            signOut(auth.value);
+        }
+        if (user.value) {
+            user.value = null;
+        }
+        if (github.value) {
+            github.value = null;
+        }
+        if (gh_self.value) {
+            gh_self.value = null;
+        }
+        if (team.value) {
+            team.value = null;
+        }
+        import("sweetalert2").then(({ default: Swal }) =>
+            Swal.fire({ title: "已登出", text: "成功登出囉！", icon: "success" }),
+        );
+    } catch (err) {
+        console.error("Sign Out Error", err);
     }
-    import("sweetalert2").then(({ default: Swal }) =>
-        Swal.fire({ title: "已登出", text: "成功登出囉！", icon: "success" }),
-    );
 }
 
 export function set_auto_logout() {

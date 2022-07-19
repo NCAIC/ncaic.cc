@@ -77,7 +77,7 @@ const announcement_id = ref("");
             </div>
         </div>
         <div class="h-full w-full overflow-hidden p-4">
-            <h2 id="news" class="text-3xl">公告</h2>
+            <h2 id="news" class="text-3xl">公告 Announcements</h2>
             <Fade>
                 <div class="my-2 text-lg" v-if="announcements.length">
                     <div
