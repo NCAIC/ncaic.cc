@@ -63,15 +63,16 @@ async function auth_listener(usr: User | null) {
     user.value = usr;
 
     if (
-        usr === null ||
-        !localStorage.getItem("gho-token") ||
+        localStorage.getItem("gho-expires") &&
         parseInt(localStorage.getItem("gho-expires") || "0") <= Date.now()
     ) {
         sign_out();
     }
 
-    github.value = new Octokit({ auth: localStorage.getItem("gho-token") });
-    set_auto_logout();
+    if (usr && localStorage.getItem("gho-token")) {
+        github.value = new Octokit({ auth: localStorage.getItem("gho-token") });
+        set_auto_logout();
+    }
 
     if (stage.value < 2) {
         stage.value = 2;
