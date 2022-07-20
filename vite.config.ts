@@ -14,4 +14,7 @@ export default defineConfig({
             { find: "node-fetch", replacement: "isomorphic-fetch" },
         ],
     },
+    build: {
+        sourcemap: true,
+    },
 });
