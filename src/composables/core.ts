@@ -123,7 +123,7 @@ function subscribe() {
         [
             query(
                 collection(db.value, "news"),
-                where("time", "<=", new Date()),
+                where("time", "<=", new Date(Date.now() - 1000)),
                 orderBy("time", "desc"),
             ),
             announcements,
