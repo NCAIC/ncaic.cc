@@ -131,13 +131,18 @@ function subscribe() {
     ] as const;
 
     for (const [query, target] of pairs) {
-        onSnapshot(query, (snapshot) => {
-            target.splice(
-                0,
-                target.length,
-                ...snapshot.docs.map((doc) => ({ ...(doc.data() as any), id: doc.id })),
-            );
-        });
+        try {
+            onSnapshot(query, (snapshot) => {
+                target.splice(
+                    0,
+                    target.length,
+                    ...snapshot.docs.map((doc) => ({ ...(doc.data() as any), id: doc.id })),
+                );
+            });
+        } catch (err) {
+            console.error(err);
+            console.trace(err);
+        }
     }
 }
 
