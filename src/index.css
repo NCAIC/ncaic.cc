@@ -24,3 +24,7 @@
     src: url(/fonts/FakePearl-Regular.woff2) format("woff2"),
         url(/fonts/FakePearl-Regular.woff) format("woff");
 }
+
+.markdown-body pre {
+    @apply whitespace-pre-wrap;
+}

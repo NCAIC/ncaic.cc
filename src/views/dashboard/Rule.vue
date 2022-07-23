@@ -13,6 +13,12 @@ render("docs/brochure.md").then((html) => {
 <template>
     <div>
         <h1 class="text-xl">競賽規則</h1>
-        <p class="whitespace-pre-wrap" v-html="brochure"></p>
+        <p class="markdown-body whitespace-pre-wrap" v-html="brochure"></p>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.1.0/github-markdown-light.min.css"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
     </div>
 </template>
