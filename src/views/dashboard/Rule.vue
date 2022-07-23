@@ -1,5 +1,13 @@
 <script setup lang="ts">
-import { brochure } from "../../rules";
+import { ref } from "vue";
+import { render } from "../../composables/markdown";
+
+const brochure = ref("載入中...");
+render("docs/brochure.md").then((html) => {
+    if (html) {
+        brochure.value = html;
+    }
+});
 </script>
 
 <template>
