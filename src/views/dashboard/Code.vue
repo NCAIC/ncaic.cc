@@ -4,14 +4,16 @@ import Swal from "sweetalert2";
 import { doc, getDoc, Timestamp } from "firebase/firestore";
 import { httpsCallable } from "firebase/functions";
 import hljs from "highlight.js/es/common";
-import MdiCheck from "~icons/mdi/Check.vue";
-import MdiTimerAlert from "~icons/mdi/TimerAlert.vue";
-import MdiCloseThick from "~icons/mdi/CloseThick.vue";
 import Fade from "../../components/Fade.vue";
 import { team, db, functions, github } from "../../composables/core";
 import { open } from "../../composables/open";
 
 const LinkRepo = defineAsyncComponent(() => import("@c/LinkRepo.vue"));
+const MdiCheck = defineAsyncComponent(() => import("~icons/mdi/Check.vue"));
+const MdiTimerAlert = defineAsyncComponent(() => import("~icons/mdi/TimerAlert.vue"));
+const MdiCloseThick = defineAsyncComponent(() => import("~icons/mdi/CloseThick.vue"));
+const MdiMotionPlay = defineAsyncComponent(() => import("~icons/mdi/MotionPlay.vue"));
+const MdiAlertBox = defineAsyncComponent(() => import("~icons/mdi/AlertBox.vue"));
 
 const program = reactive({
     code: "",
@@ -98,6 +100,19 @@ async function check_workflow() {
         return;
     }
 
+    console.log(workflow);
+
+    if (workflow.status === "in_progress") {
+        test_status.value = 3;
+        setTimeout(() => check_workflow(), 30_000);
+        return;
+    }
+
+    if (workflow.status !== "completed") {
+        test_status.value = 4;
+        return;
+    }
+
     if (workflow.conclusion === "success") {
         test_status.value = 1;
     } else {
@@ -148,7 +163,23 @@ async function check_workflow() {
                         @click="open(workflow_url)"
                     >
                         <MdiCloseThick class="mr-1 inline-block" />
-                        此 Commit 未通過自動測試
+                        此 Commit 未通過
+                    </div>
+                    <div
+                        v-if="test_status === 3"
+                        class="flex animate-pulse cursor-pointer flex-row items-center text-amber-500"
+                        @click="open(workflow_url)"
+                    >
+                        <MdiMotionPlay class="mr-1 inline-block" />
+                        自動測試正在進行中
+                    </div>
+                    <div
+                        v-if="test_status === 4"
+                        class="flex cursor-pointer flex-row items-center text-gray-500"
+                        @click="open(workflow_url)"
+                    >
+                        <MdiAlertBox class="mr-1 inline-block" />
+                        自動測試狀態未知
                     </div>
                 </div>
                 <div v-else class="animate-pulse text-lg text-slate-500">正在檢查自動測試記錄</div>
