@@ -33,8 +33,18 @@
     @apply leading-5;
 }
 
-.markdown-body ul, .markdown-body ol {
+.markdown-body ol {
     list-style: trad-chinese-informal;
+    @apply !mb-0 leading-4;
+}
+
+.markdown-body h2 + ol, .markdown-body h3 + ol {
+    list-style: decimal;
+    @apply !mb-0 leading-4;
+}
+
+.markdown-body ul {
+    list-style: initial;
     @apply !mb-0 leading-4;
 }
 
