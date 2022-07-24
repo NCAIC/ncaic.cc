@@ -7,6 +7,7 @@ import hljs from "highlight.js/es/common";
 import MdiCheck from "~icons/mdi/Check.vue";
 import MdiTimerAlert from "~icons/mdi/TimerAlert.vue";
 import MdiCloseThick from "~icons/mdi/CloseThick.vue";
+import Fade from "../../components/Fade.vue";
 import { team, db, functions, github } from "../../composables/core";
 import { open } from "../../composables/open";
 
