@@ -25,8 +25,7 @@ const code = ref("");
 const updating = ref(false);
 const test_status = ref(-1);
 const workflow_url = ref("");
-get_code();
-watch(team, get_code);
+get_code().then(() => check_workflow());
 
 async function get_code() {
     if (db.value === null) {
@@ -47,8 +46,6 @@ async function get_code() {
 
     // @ts-ignore
     code.value = hljs.highlightAuto(program.code).value;
-
-    check_workflow();
 }
 
 async function update() {
@@ -72,7 +69,7 @@ async function update() {
             "submit",
         )(params);
 
-        get_code();
+        get_code().then(() => check_workflow());
 
         Swal.fire({ title: "更新成功", text: `檔案雜湊：${data.program.sha}`, icon: "success" });
     } catch (err) {
@@ -85,6 +82,8 @@ async function check_workflow() {
     if (!github.value || !team.value || !program.commit) {
         return;
     }
+
+    test_status.value = -1;
 
     const { data } = await github.value.rest.actions.listWorkflowRunsForRepo({
         owner: team.value.owner,
@@ -102,7 +101,7 @@ async function check_workflow() {
 
     console.log(workflow);
 
-    if (workflow.status === "in_progress") {
+    if (["in_progress", "queued", "requested", "waiting"].includes(workflow.status || "")) {
         test_status.value = 3;
         setTimeout(() => check_workflow(), 30_000);
         return;
@@ -182,7 +181,9 @@ async function check_workflow() {
                         自動測試狀態未知
                     </div>
                 </div>
-                <div v-else class="animate-pulse text-lg text-slate-500">正在檢查自動測試記錄</div>
+                <div v-else-if="team.program" class="animate-pulse text-lg text-slate-500">
+                    正在檢查自動測試記錄
+                </div>
             </Fade>
             <div>
                 <button
