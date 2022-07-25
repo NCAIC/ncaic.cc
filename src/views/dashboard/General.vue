@@ -5,6 +5,8 @@ const resources = {
     "加入 Discord 伺服器": "https://discord.gg/TsrrWAXaMT",
     "NCAIC 報名與使用手冊": "https://hackmd.io/@NCAIC/guide",
     "GitHub Repository 模板": "https://github.com/NCAIC/NCAIC-2022-Template/generate",
+    "透過 contact@ncaic.cc 聯絡我們":
+        "https://mail.google.com/mail/?to=contact@ncaic.cc&su=[%E8%A9%A2%E5%95%8F]%20&body=%E6%88%91%E6%83%B3%E8%A9%A2%E5%95%8F...&tf=cm",
 };
 </script>
 
