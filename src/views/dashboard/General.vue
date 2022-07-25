@@ -2,7 +2,7 @@
 import { user, sign_out } from "../../composables/core";
 
 const resources = {
-    "加入 Discord 伺服器": "https://discord.gg/8EJCYjT8Aa",
+    "加入 Discord 伺服器": "https://discord.gg/TsrrWAXaMT",
     "NCAIC 報名與使用手冊": "https://hackmd.io/@NCAIC/guide",
     "GitHub Repository 模板": "https://github.com/NCAIC/NCAIC-2022-Template/generate",
 };
