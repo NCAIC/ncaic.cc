@@ -96,6 +96,7 @@ async function check_workflow() {
 
     if (!workflow) {
         test_status.value = 0;
+        setTimeout(() => check_workflow(), 30_000);
         return;
     }
 
@@ -146,7 +147,7 @@ async function check_workflow() {
                 <div v-if="test_status >= 0" class="text-lg">
                     <div v-if="test_status === 0" class="flex flex-row items-center text-slate-500">
                         <MdiTimerAlert class="mr-1 inline-block" />
-                        此 Commit 已年代久遠，試試重新提交
+                        無自動測試記錄，重新提交或稍等一下
                     </div>
                     <div
                         v-if="test_status === 1"
@@ -162,7 +163,7 @@ async function check_workflow() {
                         @click="open(workflow_url)"
                     >
                         <MdiCloseThick class="mr-1 inline-block" />
-                        此 Commit 未通過
+                        此 Commit 未通過自動測試
                     </div>
                     <div
                         v-if="test_status === 3"
