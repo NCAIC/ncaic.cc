@@ -107,7 +107,7 @@ async function link_repo() {
 
         <div v-if="repo_list.length" class="w-full">
             <select
-                class="my-2 max-w-full rounded border border-gray-600 p-2 transition-all hover:border-gray-800"
+                class="my-2 max-w-full rounded border border-slate-600 p-2 transition-all hover:border-slate-800"
                 v-model="selected_repo_idx"
             >
                 <option v-for="(repo, index) in repo_list" :value="index">
@@ -116,7 +116,7 @@ async function link_repo() {
             </select>
 
             <button
-                class="my-2 block rounded border border-gray-600 p-2 transition-all hover:border-emerald-400 hover:bg-emerald-400 hover:text-white disabled:border-gray-300 disabled:bg-gray-300 disabled:text-gray-500"
+                class="my-2 block rounded border border-slate-600 p-2 transition-all hover:border-emerald-400 hover:bg-emerald-400 hover:text-white disabled:border-slate-300 disabled:bg-slate-300 disabled:text-slate-500"
                 @click="link_repo"
                 :disabled="selected_repo_idx === -1 || linking_repo"
             >

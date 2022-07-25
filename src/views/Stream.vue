@@ -10,7 +10,7 @@ import { schedules, teams } from "../composables/core";
             <div class="w-full">
                 <div
                     v-for="s in schedules"
-                    class="mb-4 grid w-full grid-cols-1 rounded-md border border-gray-400 p-2 lg:grid-cols-3"
+                    class="mb-4 grid w-full grid-cols-1 rounded-md border border-slate-400 p-2 lg:grid-cols-3"
                 >
                     <div
                         class="col-span-1 flex flex-row justify-around border-b p-2 lg:flex-col lg:justify-center lg:border-b-0 lg:border-r"
@@ -21,7 +21,7 @@ import { schedules, teams } from "../composables/core";
                         </div>
                         <div>
                             <p class="text-sm">{{ s.rule.matches.length }} 局 {{ s.rule.rule }}</p>
-                            <p class="text-sm text-gray-500">
+                            <p class="text-sm text-slate-500">
                                 {{
                                     s.rule.matches
                                         .map((m) => m.type + (m.count ? "-" + m.count : ""))

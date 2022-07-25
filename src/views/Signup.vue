@@ -62,7 +62,7 @@ async function sign() {
             <h1 class="my-4 text-3xl">競賽報名 Signup</h1>
 
             <div
-                class="markdown-body h-4/5 w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap rounded-md border border-gray-800 bg-white/70 p-4"
+                class="markdown-body h-4/5 w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap rounded-md border border-slate-800 bg-white/70 p-4"
                 v-html="brochure"
             ></div>
 

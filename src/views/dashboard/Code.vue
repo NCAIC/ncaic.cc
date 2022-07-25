@@ -174,7 +174,7 @@ async function check_workflow() {
                     </div>
                     <div
                         v-if="test_status === 4"
-                        class="flex cursor-pointer flex-row items-center text-gray-500"
+                        class="flex cursor-pointer flex-row items-center text-slate-500"
                         @click="open(workflow_url)"
                     >
                         <MdiAlertBox class="mr-1 inline-block" />
@@ -187,7 +187,7 @@ async function check_workflow() {
             </Fade>
             <div>
                 <button
-                    class="my-2 rounded border border-gray-600 p-2 transition-all hover:border-cyan-400 hover:bg-cyan-400 hover:text-white disabled:border-gray-300 disabled:bg-gray-300 disabled:text-gray-500"
+                    class="my-2 rounded border border-slate-600 p-2 transition-all hover:border-cyan-400 hover:bg-cyan-400 hover:text-white disabled:border-slate-300 disabled:bg-slate-300 disabled:text-slate-500"
                     @click="update"
                     :disabled="updating"
                 >
@@ -205,7 +205,7 @@ async function check_workflow() {
             </div>
             <div
                 v-if="code"
-                class="w-full overflow-auto whitespace-pre-wrap rounded border border-gray-200 p-2"
+                class="w-full overflow-auto whitespace-pre-wrap rounded border border-slate-200 p-2"
             >
                 <code v-html="code"></code>
             </div>

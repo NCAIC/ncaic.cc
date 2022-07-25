@@ -31,7 +31,7 @@ const resources = {
         </div>
 
         <button
-            class="my-2 rounded border border-gray-600 p-2 transition-all hover:border-rose-600 hover:bg-rose-500 hover:text-white"
+            class="my-2 rounded border border-slate-600 p-2 transition-all hover:border-rose-600 hover:bg-rose-500 hover:text-white"
             @click="sign_out"
         >
             登出 Sign Out

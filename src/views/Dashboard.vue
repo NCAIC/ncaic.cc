@@ -29,11 +29,11 @@ async function signed_guard() {
         <div class="flex w-4/5 max-w-3xl flex-col items-center">
             <h1 class="my-4 text-3xl">資訊面板 Dashboard</h1>
             <div class="flex w-full flex-col md:flex-row">
-                <div class="flex flex-col border-b border-gray-400 px-2 md:border-b-0 md:border-r">
+                <div class="flex flex-col border-b border-slate-400 px-2 md:border-b-0 md:border-r">
                     <button
                         :class="[
-                            'mb-1 block rounded-lg border  p-2 text-left transition-all hover:bg-gray-500/20 md:w-40',
-                            tab === 'general' ? 'border-gray-400' : 'border-transparent',
+                            'mb-1 block rounded-lg border  p-2 text-left transition-all hover:bg-slate-500/20 md:w-40',
+                            tab === 'general' ? 'border-slate-400' : 'border-transparent',
                         ]"
                         @click="tab = 'general'"
                     >
@@ -41,8 +41,8 @@ async function signed_guard() {
                     </button>
                     <button
                         :class="[
-                            'mb-1 block rounded-lg border  p-2 text-left transition-all hover:bg-gray-500/20 md:w-40',
-                            tab === 'team' ? 'border-gray-400' : 'border-transparent',
+                            'mb-1 block rounded-lg border  p-2 text-left transition-all hover:bg-slate-500/20 md:w-40',
+                            tab === 'team' ? 'border-slate-400' : 'border-transparent',
                         ]"
                         @click="tab = 'team'"
                     >
@@ -50,8 +50,8 @@ async function signed_guard() {
                     </button>
                     <button
                         :class="[
-                            'mb-1 block rounded-lg border p-2 text-left transition-all hover:bg-gray-500/20 md:w-40',
-                            tab === 'code' ? 'border-gray-400' : 'border-transparent',
+                            'mb-1 block rounded-lg border p-2 text-left transition-all hover:bg-slate-500/20 md:w-40',
+                            tab === 'code' ? 'border-slate-400' : 'border-transparent',
                         ]"
                         @click="tab = 'code'"
                     >
@@ -59,8 +59,8 @@ async function signed_guard() {
                     </button>
                     <button
                         :class="[
-                            'mb-1 block rounded-lg border p-2 text-left transition-all hover:bg-gray-500/20 md:w-40',
-                            tab === 'rule' ? 'border-gray-400' : 'border-transparent',
+                            'mb-1 block rounded-lg border p-2 text-left transition-all hover:bg-slate-500/20 md:w-40',
+                            tab === 'rule' ? 'border-slate-400' : 'border-transparent',
                         ]"
                         @click="tab = 'rule'"
                     >

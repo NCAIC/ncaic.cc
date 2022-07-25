@@ -20,7 +20,7 @@ watch(user, () => {
 </script>
 
 <template>
-    <div class="flex h-16 w-full items-center border-b-2 border-gray-600">
+    <div class="flex h-16 w-full items-center border-b-2 border-slate-600">
         <router-link to="/" class="flex h-full items-center p-2 text-3xl font-bold tracking-wider">
             <img src="/logo.gif" alt="NCAIC Logo" class="h-full" style="aspect-ratio: 11/3" />
         </router-link>

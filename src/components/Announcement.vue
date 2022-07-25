@@ -32,7 +32,9 @@ function close(event: MouseEvent) {
             <div class="h-full w-full overflow-auto rounded">
                 <h1 class="text-2xl">{{ announcement?.title }}</h1>
                 <hr class="my-2" />
-                <p class="mb-4 text-gray-600">{{ announcement?.time.toDate().toLocaleString() }}</p>
+                <p class="mb-4 text-slate-600">
+                    {{ announcement?.time.toDate().toLocaleString() }}
+                </p>
                 <div class="overflow-auto" v-html="announcement?.content"></div>
             </div>
         </div>

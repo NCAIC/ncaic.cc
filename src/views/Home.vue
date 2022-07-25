@@ -57,7 +57,7 @@ const announcement_id = ref("");
                         >
                         <span class="px-2">{{ news.title }}</span>
                         <span
-                            class="hidden text-gray-500 sm:inline"
+                            class="hidden text-slate-500 sm:inline"
                             v-html="
                                 news.content.slice(0, 20) + (news.content.length > 20 ? '...' : '')
                             "
@@ -85,7 +85,7 @@ const announcement_id = ref("");
                         :key="n.title"
                         :class="[
                             'mb-2 cursor-pointer border-l-4 p-2 transition-all hover:border-l-8',
-                            n.pinned ? 'border-cyan-400' : 'border-gray-400',
+                            n.pinned ? 'border-cyan-400' : 'border-slate-400',
                         ]"
                         @click="announcement_id = n.id"
                     >
