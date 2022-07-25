@@ -59,7 +59,7 @@ async function sign() {
 <template>
     <div class="flex h-full w-full justify-center p-4">
         <div class="flex h-full w-4/5 max-w-3xl flex-col items-center">
-            <h1 class="my-4 text-3xl">競賽報名 Signup</h1>
+            <h1 class="my-4 text-3xl">帳號註冊 Signup</h1>
 
             <div
                 class="markdown-body h-4/5 w-full overflow-y-auto overflow-x-hidden whitespace-pre-wrap rounded-md border border-slate-800 bg-white/70 p-4"

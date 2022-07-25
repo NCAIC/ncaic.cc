@@ -10,7 +10,7 @@ const pinned = computed(() => announcements.filter((n) => n.pinned).slice(0, 3))
 const links = reactive([
     user.value
         ? { zh: "資訊面板", en: "Dashboard", to: "/dashboard" }
-        : { zh: "競賽報名", en: "Signup", to: "/signup" },
+        : { zh: "帳號註冊", en: "Signup", to: "/signup" },
     { zh: "競賽日程", en: "Agenda", to: "/agenda" },
     { zh: "競賽直播", en: "Stream", to: "/stream" },
     { zh: "關於我們", en: "About", to: "/about" },
@@ -22,7 +22,7 @@ watch(user, () => {
         links[0].en = "Dashboard";
         links[0].to = "/dashboard";
     } else {
-        links[0].zh = "競賽報名";
+        links[0].zh = "帳號註冊";
         links[0].en = "Signup";
         links[0].to = "/signup";
     }
